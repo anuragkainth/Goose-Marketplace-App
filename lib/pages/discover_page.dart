@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
 import 'package:marketplace_app/constants/images.dart';
+import 'package:marketplace_app/pages/profile_page.dart';
+import 'package:marketplace_app/utilities/floating_bar_add_button.dart';
+import 'package:marketplace_app/utilities/floating_bar_buttons.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -77,6 +80,28 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingNavAddButton(onPressed: (){},),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        height: MediaQuery.of(context).size.width * 2 / 13,
+        shape: CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            FloatingNavButtons(icon: Icons.home, buttonName: 'Discover', onPressed: (){}),
+            FloatingNavButtons(icon: Icons.category, buttonName: 'Items', onPressed: (){}),
+            SizedBox(width: 40.0),
+            FloatingNavButtons(icon: Icons.auto_awesome, buttonName: 'Services', onPressed: (){}),
+            FloatingNavButtons(icon: Icons.person, buttonName: 'Profile', onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>  ProfileSettingsPage(),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );
