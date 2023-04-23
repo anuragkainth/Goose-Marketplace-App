@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
 import 'package:marketplace_app/constants/images.dart';
+import 'package:marketplace_app/database/user_model.dart';
+import 'package:marketplace_app/database/user_repository.dart';
 import 'package:marketplace_app/utilities/auth_button.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:marketplace_app/utilities/utils.dart';
+import 'package:get/get.dart';
 
 class MakeAccount extends StatefulWidget {
   const MakeAccount({Key? key}) : super(key: key);
@@ -349,9 +352,19 @@ class _MakeAccountState extends State<MakeAccount> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+
+        final user = UserModel(
+            fullName: userNameController.text.trim(),
+            password: passwordController.text.trim(),
+            email: emailController.text.trim()
+        );
+
+        final userRepo = Get.put(UserRepository());
+        await userRepo.createUser(user);
       }
 
       Navigator.popUntil(context, (route) => route.isFirst);
+
     } on FirebaseAuthException catch (e) {
       print(e);
 

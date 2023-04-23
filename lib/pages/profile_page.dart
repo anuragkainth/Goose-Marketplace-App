@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marketplace_app/constants/colors.dart';
 import 'package:marketplace_app/utilities/floating_bar_buttons.dart';
 import 'package:marketplace_app/utilities/floating_bar_add_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileSettingsPage extends StatelessWidget {
   const ProfileSettingsPage({Key? key}) : super(key: key);
@@ -13,78 +15,85 @@ class ProfileSettingsPage extends StatelessWidget {
         title: Text('Profile Settings', style: GoogleFonts.nunito(),),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 24),
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[300],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 24),
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
+                    width: 125,
+                    height: 125,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey[300],
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      size: 64,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Icon(
-                    Icons.person,
-                    size: 64,
-                    color: Colors.white,
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                      color: kDefaultRedColor,
+                    ),
+                    child: IconButton(
+                      onPressed: (){},
+                      icon: Icon(Icons.edit),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.red,
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 24),
-            _buildButton(
-              icon: Icons.person,
-              title: 'Personal Information',
-              onTap: () {},
-            ),
-            _buildNotificationButton(
-              icon: Icons.notifications,
-              title: 'Push Notifications',
-              subtitle: 'Receive push notifications',
-              value: true,
-              onToggle: (value) {},
-            ),
-            _buildNotificationButton(
-              icon: Icons.email,
-              title: 'Subscribe to Email',
-              subtitle: 'Receive newsletters and updates',
-              value: false,
-              onToggle: (value) {},
-            ),
-            _buildButton(
-              icon: Icons.language,
-              title: 'Language',
-              onTap: () {},
-            ),
-            _buildButton(
-              icon: Icons.lock,
-              title: 'Change Password',
-              onTap: () {},
-            ),
-            _buildButton(
-              icon: Icons.logout,
-              title: 'Logout',
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+                ],
+              ),
+              SizedBox(height: 24),
+              buildButton(
+                icon: Icons.person,
+                title: 'Personal Information',
+                onTap: () {},
+              ),
+              _buildNotificationButton(
+                icon: Icons.notifications,
+                title: 'Push Notifications',
+                subtitle: 'Receive alerts for bid activity',
+                value: true,
+                onToggle: (value) {},
+              ),
+              _buildNotificationButton(
+                icon: Icons.email,
+                title: 'Subscribe to Email',
+                subtitle: 'Receive marketing emails',
+                value: false,
+                onToggle: (value) {
+                },
+              ),
+              buildButton(
+                icon: Icons.language,
+                title: 'Language',
+                onTap: () {},
+              ),
+              buildButton(
+                icon: Icons.verified_user,
+                title: 'Change Password',
+                onTap: () {},
+              ),
+              buildButton(
+                icon: Icons.logout,
+                title: 'Logout',
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingNavAddButton(onPressed: (){},),
@@ -95,43 +104,44 @@ class ProfileSettingsPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            FloatingNavButtons(icon: Icons.home, buttonName: 'Discover', onPressed: (){}),
+            FloatingNavButtons(icon: Icons.home, buttonName: 'Discover', onPressed: (){Navigator.pop(context);}),
             FloatingNavButtons(icon: Icons.category, buttonName: 'Items', onPressed: (){}),
             SizedBox(width: 40.0),
             FloatingNavButtons(icon: Icons.auto_awesome, buttonName: 'Services', onPressed: (){}),
-            FloatingNavButtons(icon: Icons.person, buttonName: 'Profile', onPressed: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>  ProfileSettingsPage(),
-                ),
-              );
-            }),
+            FloatingNavButtons(icon: Icons.person, buttonName: 'Profile', onPressed: null),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildButton({
+  Widget buildButton({
     required IconData icon,
     required String title,
-    required VoidCallback onTap,
+    required void Function()? onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
+    return TextButton(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+            return kDefaultGreyColor; // No overlay color
+          },
+        ),
+      ),
+      onPressed: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
-            Icon(icon,color: Colors.white,),
+            CircleAvatar(radius: 24, backgroundColor: kDefaultGreyColor, child: Icon(icon,color: Colors.white,size: 22)),
             SizedBox(width: 16),
             Expanded(
               child: Text(
                 title,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.white,),
+            Icon(Icons.arrow_forward_ios, color: Colors.grey,size: 14,),
           ],
         ),
       ),
@@ -145,35 +155,45 @@ class ProfileSettingsPage extends StatelessWidget {
     required bool value,
     required ValueChanged<bool> onToggle,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white,),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onToggle,
-          ),
-        ],
+    return TextButton(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+            return kDefaultGreyColor; // No overlay color
+          },
+        ),
       ),
+      onPressed: (){},
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            CircleAvatar(radius: 24, backgroundColor: kDefaultGreyColor, child: Icon(icon,color: Colors.white,size: 22)),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Switch(
+              value: value,
+              onChanged: onToggle,
+            ),
+          ],
+        ),
 
+      ),
     );
   }
 }

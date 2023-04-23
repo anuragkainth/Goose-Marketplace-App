@@ -33,9 +33,14 @@ dependencies:
 
   google_fonts: ^4.0.3
   msh_checkbox: ^2.0.1
+  email_validator: ^2.1.17
+  get: ^4.6.5
+
+  # Firebase Packages
   cloud_firestore: ^4.5.2
   firebase_auth: ^4.4.2
-  email_validator: ^2.1.17
+  firebase_core: ^2.10.0
+
 
 
 
