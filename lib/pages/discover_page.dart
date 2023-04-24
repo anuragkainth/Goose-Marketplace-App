@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
 import 'package:marketplace_app/constants/images.dart';
+import 'package:marketplace_app/pages/create_post_page.dart';
 import 'package:marketplace_app/pages/profile_page.dart';
 import 'package:marketplace_app/utilities/floating_bar_add_button.dart';
 import 'package:marketplace_app/utilities/floating_bar_buttons.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -23,6 +25,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
   }
+  int _currentImageIndex = 0;
+  int _currentImageIndex2 = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,41 +52,130 @@ class _DiscoverPageState extends State<DiscoverPage> {
          ),
        ],
      ),
-      body: SizedBox(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
-              Text(
-                'Welcome User,',
-                style: GoogleFonts.nunito(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 60),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Discover the',
+                  style: GoogleFonts.nunito(
                     textStyle: TextStyle(
                       color: Colors.white,
-                      fontSize: 34
-                    )),
+                      fontSize: 42,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' Limitless Potential',
+                      style: GoogleFonts.nunito(
+                        textStyle: TextStyle(color: kDefaultRedColor, fontWeight: FontWeight.bold, fontSize: 42),
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' of Goose!',
+                      style:  GoogleFonts.nunito(
+                        textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 42),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 10,
+            ),
+            SizedBox(height: 30),
+            SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              width: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: Card(
+                  color: kDefaultRedColor,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 36.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              'Explore Now ',
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              )
+                          ),
+                          Icon(
+                            Icons.east,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                '',
-                style: GoogleFonts.nunito(
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                    )),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: CarouselSlider.builder(
+                itemCount: kSliderImagesCourses.length,
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 1 / 4,
+                  initialPage: _currentImageIndex,
+                  enableInfiniteScroll: true,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 2),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  onPageChanged: (int index, CarouselPageChangedReason reason) {
+                    setState(() {
+                      _currentImageIndex = index;
+                    });
+                  },
+                ),
+                itemBuilder: (BuildContext context, int index, int realIndex) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Center(
+                        child: Image.asset(
+                          kSliderImagesCourses[index],
+                          height: (index == _currentImageIndex)
+                              ? MediaQuery.of(context).size.height * 2 / 3
+                              : MediaQuery.of(context).size.height * 3 / 5,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-              SizedBox(height: 10),
+            ),
 
-            ],
-          ),
+          ],
         ),
       ),
-      floatingActionButton: FloatingNavAddButton(onPressed: (){},),
+      floatingActionButton: FloatingNavAddButton(onPressed: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>  CreatePostPage(),
+          ),
+        );
+      },),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         height: MediaQuery.of(context).size.width * 2 / 13,
@@ -107,3 +200,39 @@ class _DiscoverPageState extends State<DiscoverPage> {
     );
   }
 }
+//
+// SizedBox(
+// width: double.infinity,
+// height: MediaQuery.of(context).size.height,
+// child: Padding(
+// padding: EdgeInsets.symmetric(horizontal: 20.0),
+// child: Column(
+// mainAxisAlignment: MainAxisAlignment.start,
+// crossAxisAlignment: CrossAxisAlignment.start,
+// children: [
+// SizedBox(height: 20),
+// Row(
+// children: [
+// Text(
+// 'Welcome, ',
+// style: GoogleFonts.nunito(
+// textStyle: TextStyle(
+// color: Colors.white,
+// fontSize: 26
+// )),
+// ),
+// Text(
+// FirebaseAuth.instance.currentUser!.email!,
+// style: GoogleFonts.nunito(
+// textStyle: TextStyle(
+// color: Colors.white,
+// fontSize: 26
+//
+// )),
+// ),
+// ],
+// ),
+// ],
+// ),
+// ),
+// ),

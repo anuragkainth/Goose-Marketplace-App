@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
 
 class AuthButton extends StatelessWidget {
-  AuthButton({Key? key, this.imageLoc, required this.text, this.onPressed, required this.color, required this.overlayColor})
+  AuthButton({Key? key, this.imageLoc, required this.text, this.onPressed, required this.color, required this.overlayColor, this.textColor})
       : super(key: key);
 
   final String? imageLoc;
@@ -11,6 +11,7 @@ class AuthButton extends StatelessWidget {
   void Function()? onPressed;
   final Color color;
   final Color overlayColor;
+  final Color? textColor;
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -43,7 +44,7 @@ class AuthButton extends StatelessWidget {
             Text(
               text,
               style: GoogleFonts.nunito(
-                  textStyle: TextStyle(color: Colors.white, fontSize: 16)),
+                  textStyle: TextStyle(color: textColor ?? Colors.white, fontSize: 16)),
             ),
           ],
         ),

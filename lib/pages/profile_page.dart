@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
 import 'package:marketplace_app/pages/account_update_page.dart';
+import 'package:marketplace_app/pages/create_post_page.dart';
 import 'package:marketplace_app/pages/personal_info_page.dart';
 import 'package:marketplace_app/utilities/floating_bar_buttons.dart';
 import 'package:marketplace_app/utilities/floating_bar_add_button.dart';
@@ -110,7 +111,13 @@ class ProfileSettingsPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingNavAddButton(onPressed: (){},),
+      floatingActionButton: FloatingNavAddButton(onPressed: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>  CreatePostPage(),
+          ),
+        );
+      },),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         height: MediaQuery.of(context).size.width * 2 / 13,
