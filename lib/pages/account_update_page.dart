@@ -45,7 +45,7 @@ class _UpdateAccPageState extends State<UpdateAccPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              'Personal Information',
+              'Update Account',
               style: GoogleFonts.nunito(
                   textStyle: TextStyle(color: Colors.white)
               ),
@@ -85,7 +85,7 @@ class _UpdateAccPageState extends State<UpdateAccPage> {
                                     Row(
                                       children: [
                                         Text(
-                                          'Manage your Account',
+                                          'Update your Account',
                                           style: GoogleFonts.poppins(
                                               textStyle: TextStyle(
                                                 color: Colors.white,
