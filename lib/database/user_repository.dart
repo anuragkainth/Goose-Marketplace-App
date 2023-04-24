@@ -34,4 +34,20 @@ class UserRepository extends GetxController {
       );
     });
   }
+
+  // FETCH USER DETAIL FORM Firestore
+
+  Future<UserModel> getUserDetails(String email) async {
+
+    final snapShot = await _db.collection("Users").where("Email", isEqualTo: email).get();
+    final userData = snapShot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+
+    return userData;
+  }
+
+  Future<void> updateUserRecord(UserModel user) async {
+
+    await _db.collection("Users").doc(user.id).update(user.toJson());
+
+  }
 }

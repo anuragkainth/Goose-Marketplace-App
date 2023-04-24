@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace_app/constants/colors.dart';
+import 'package:marketplace_app/pages/account_update_page.dart';
+import 'package:marketplace_app/pages/personal_info_page.dart';
 import 'package:marketplace_app/utilities/floating_bar_buttons.dart';
 import 'package:marketplace_app/utilities/floating_bar_add_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,7 +59,13 @@ class ProfileSettingsPage extends StatelessWidget {
               buildButton(
                 icon: Icons.person,
                 title: 'Personal Information',
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>  PersonalInfoPage(),
+                    ),
+                  );
+                },
               ),
               _buildNotificationButton(
                 icon: Icons.notifications,
@@ -80,9 +88,15 @@ class ProfileSettingsPage extends StatelessWidget {
                 onTap: () {},
               ),
               buildButton(
-                icon: Icons.verified_user,
-                title: 'Change Password',
-                onTap: () {},
+                icon: Icons.manage_accounts,
+                title: 'Update Account',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>  UpdateAccPage(),
+                    ),
+                  );
+                },
               ),
               buildButton(
                 icon: Icons.logout,
@@ -138,7 +152,7 @@ class ProfileSettingsPage extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 18, color: Colors.white)),
               ),
             ),
             Icon(Icons.arrow_forward_ios, color: Colors.grey,size: 14,),
@@ -176,12 +190,12 @@ class ProfileSettingsPage extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 18, color: Colors.white)),
                   ),
                   SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 14, color: Colors.grey),)
                   ),
                 ],
               ),
